@@ -21,7 +21,6 @@ moved to `..\_duplicates_to_delete` for you to review and delete.
 | `results/benchmarks_PRE_REPAIR_2026-08-27.db` | The database before the 27 Aug profiler repair, kept as evidence |
 | `full_run_output/` | Raw output of the full-scale campaign (its own DB, log, validation, CSVs) |
 | `cpu_corrected_output/` | Raw output of the two CPU-corrected sessions (20 Sep), the instrument self-test and the analysis summaries |
-| `thesis/` | `Final Thesis Edition - Rewritten.docx/.pdf` (current; every change highlighted yellow) and the review report |
 | `tools/` | `audit_completeness.py`, `cpu_instrument_check.py`, `merge_corrected.py`, `merge_fixed_budget.py`, `apply_ch4_fullrun.py`, and `thesis_build/` (the scripts that rebuilt the thesis's figures, tables and text) |
 | `docs/` | `CPU_MEASUREMENT_CORRECTION.md` (read this first), the verification report, changelogs, revision notes, the old READMEs, screenshots and `evidence/` |
 

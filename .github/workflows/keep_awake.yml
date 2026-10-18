@@ -1,0 +1,54 @@
+name: Keep dashboard awake
+
+# Streamlit Community Cloud puts an app to sleep after about 12 hours without
+# visitors. This workflow opens the dashboard in a real browser every 6 hours
+# (and clicks the wake-up button if it ever finds the app asleep), so the
+# public link always opens straight away.
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"   # every 6 hours, at minute 17 (UTC)
+  workflow_dispatch:          # allows a manual run from the Actions tab
+
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install headless browser
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Visit the dashboard
+        env:
+          APP_URL: https://snn-benchmark-dashboard.streamlit.app/
+        run: |
+          python - <<'EOF'
+          import os, sys
+          from playwright.sync_api import sync_playwright
+
+          url = os.environ["APP_URL"]
+          with sync_playwright() as p:
+              page = p.chromium.launch().new_page()
+              page.goto(url, timeout=120_000)
+              page.wait_for_timeout(15_000)
+
+              wake = page.get_by_role("button", name="Yes, get this app back up!")
+              if wake.count() > 0:
+                  print("App was asleep - waking it up")
+                  wake.first.click()
+                  page.wait_for_timeout(120_000)
+              else:
+                  print("App was awake")
+
+              page.wait_for_timeout(30_000)   # stay connected so the visit counts
+              html = page.content()
+              if "Error running app" in html:
+                  sys.exit("The dashboard reports an error - check Manage app logs")
+              print("Visited", url, "- page title:", page.title())
+          EOF

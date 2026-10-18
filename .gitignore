@@ -1,0 +1,10 @@
+
+# Kept out of the repository
+*.v6bak
+*.docx
+*.pdf
+thesis/
+tools/thesis_build/
+results/mnist_784.npz
+results/mnist/
+

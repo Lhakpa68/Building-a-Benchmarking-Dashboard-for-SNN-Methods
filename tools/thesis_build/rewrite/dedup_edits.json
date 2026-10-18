@@ -1,0 +1,392 @@
+[
+ {
+  "i": 229,
+  "text": "The first gap has one property that makes it a research problem rather than a gap in coverage. Every such benchmark reports an ordering. Yet no published SNN benchmark identified in this review reports whether that ordering survives a change in choices its authors did not justify, above all the network size measured and the ranking metric. Neighboring fields already treat this question as part of the method ⟦C1:[16]⟧, ⟦C2:[17]⟧, ⟦C3:[18]⟧ (Section 2.5). SNN benchmarking does not test this stability, and the field’s own benchmark framework ⟦C4:[7]⟧ does not require it. A benchmark that cannot say whether its ranking belongs to the software or the experiment is unfinished. Objective O1 covers both halves: the measurement, and the test of whether its ordering holds.",
+  "home": [
+   "2.5"
+  ],
+  "note": "Cut the per-citation explanation of Han, Shahriari and Ott (ranking stability as method); explained in 2.5. Citations kept."
+ },
+ {
+  "i": 232,
+  "text": "The scope is defined in two ways. First, it covers quantitative performance (runtime, memory, energy and scalability), which matters most to a researcher choosing a simulator under hardware and time constraints. Second, the comparison uses a single hardware platform, so that a runtime difference can be attributed to the simulator rather than the hardware (Section 3.4). Applying the same harness to GPU hardware is a different study and the main item of future work (Section 6.5). The five simulators were chosen for two reasons. Together they broadly cover the main practical uses of spiking networks: biological modeling, large-scale simulation, neuromorphic deployment and machine-learning-style training. All five are also actively maintained with Python interfaces, allowing a controlled, like-for-like implementation.",
+  "home": [
+   "3.4"
+  ],
+  "note": "Cut the controlled-experiment explanation of the single platform; argued in 3.4."
+ },
+ {
+  "i": 233,
+  "text": "Three delimitations follow, stated so that no reader must infer them. First, the workload is a feedforward leaky integrate-and-fire network with a fixed fan-in of 10 synapses per neuron. No result transfers to recurrent or convolutional spiking architectures without re-measurement. Second, the energy number is a proxy derived from runtime and processor utilization, not a wall-socket measurement. Raffin and Trystram ⟦C1:[19]⟧ show that even hardware-counter-based software energy measurement has domain-dependent error, so the weaker claim made here is the defensible one. Third, the learning experiment reports cost rather than a like-for-like accuracy comparison, because the learning rules tested belong to different classes ⟦C2:[20]⟧ (Section 3.7).",
+  "home": [
+   "3.7"
+  ],
+  "note": "Cut the re-explanation of why accuracy is not comparable across rule classes (three-factor vs two-factor); home 3.7. Citation kept."
+ },
+ {
+  "i": 235,
+  "text": "The main contribution is a measured result rather than software. For one controlled instrument across ten execution backends, the ordering of simulators in these five categories is not stable. It depends on the network size measured, and again on the ranking metric. Both shifts are quantified by rank correlation, not asserted (Section 4.10). Four more contributions follow. First, an openly released suite runs identical inference, training and scalability workloads across the five simulators and all ten executable backends on one machine, keeping every run. Second, a hardware-independent energy proxy, with a validation procedure against an analytic, simulator-independent cost metric and a precise statement of what that validation proves. Third, a dashboard that makes results inspectable as well as readable (Section 3.12). Fourth, a contribution to benchmarking practice: an account of twelve defects in the measurement instruments, five in the harness and seven in the recording and reporting layer. Most had already produced wrong figures before they were found (Section 4.8).",
+  "home": [
+   "4.10",
+   "3.12"
+  ],
+  "note": "Contribution restated as finding only: cut the single-operating-point consequence (4.10) and the list of dashboard features (3.12)."
+ },
+ {
+  "i": 287,
+  "text": "The formal discipline for such questions is sensitivity analysis, and its literature bears on Experiment 4, including unflatteringly. Global sensitivity analysis is the standard for models with interacting factors, because varying each factor alone cannot detect an effect that exists only in combination. Puy et al. ⟦C1:[73]⟧ show that, even then, the chosen measure changes which factors are judged important. Newman et al. ⟦C2:[74]⟧ show the same recursion this thesis reports for benchmarks: the importance ranking from a sensitivity analysis itself depends on the chosen workflow. Saxton et al. ⟦C3:[75]⟧ show that conclusions depend on sample size, sampling scheme and total-order estimator. Dey and Dimitrov ⟦C4:[23]⟧ brought the discipline to this domain, separating model behaviour from implementation artefact in point-neuron simulations. Experiment 4 is one-factor-at-a-time, which by the standard of ⟦C5:[73]⟧ is a limitation, not a defense; Section 3.11 states what it can and cannot detect.",
+  "home": [
+   "3.11"
+  ],
+  "note": "Cut the explanation of what a one-factor-at-a-time design can and cannot detect; stated as a design boundary in 3.11 (which also points to 6.5). Citation kept."
+ },
+ {
+  "i": 316,
+  "text": "This chapter describes how the study was conducted, in enough operational detail for another researcher to repeat it and obtain comparable numbers. One design feature is stated at the outset rather than left to inference: the comparison runs on a single hardware platform (Section 3.4). Section 6.5 describes extending the same harness to GPU hardware as the main item of future work.",
+  "home": [
+   "3.4"
+  ],
+  "note": "Cut the single-platform rationale; home 3.4."
+ },
+ {
+  "i": 322,
+  "text": "The third component is the dashboard, which is often treated as decoration but is not treated that way here. Results in this field are traditionally published as a table of medians. Such a table hides exactly what a reader needs to act on: how much individual runs varied, whether the ordering holds at the network size the reader intends to run, whether an entry is a measurement or a placeholder, and how far the figure would move under a different but equally defensible metric. In this thesis, a dashboard is an interface over the stored measurements that makes these four properties directly inspectable. Section 3.12 gives the controls that do this.",
+  "home": [
+   "3.12"
+  ],
+  "note": "Cut the list of dashboard controls (filter, runs behind medians, named gaps, export); described in 3.12."
+ },
+ {
+  "i": 323,
+  "text": "This definition implies three properties worth stating, because they set this artifact apart from a results page. The dashboard only reads; it never writes. First, it has no measurement logic of its own, so it cannot display a quantity the harness did not measure. Second, one implementation of one query generates each figure, table and exported file (Section 3.12). Third, the dashboard reports the conditions under which its own rankings fail, instead of presenting a single ordering as unconditional. The sensitivity analysis of Section 3.11 provides exactly that information, and the interface shows it beside the rankings it qualifies.",
+  "home": [
+   "3.12"
+  ],
+  "note": "Cut 'so two views cannot disagree' (single shared query layer); explained in 3.12."
+ },
+ {
+  "i": 368,
+  "text": "Warmup removes one-off costs, such as just-in-time compilation and lazy imports, from the reported number. This holds only for a backend that compiles once, which Experiment 4 tests. Section 4.7 shows what a backend that recompiles on every invocation reports instead.",
+  "home": [
+   "4.7"
+  ],
+  "note": "Cut the explanation that a recompiling backend reports compiler throughput; home 4.7."
+ },
+ {
+  "i": 379,
+  "text": "The warm-up protocol (Section 3.6) follows the performance-engineering literature on warm-up bias and steady-state detection discussed in Section 2.5 ⟦C1:[71]⟧, ⟦C2:[72]⟧. Pritchard and Wicenec ⟦C3:[68]⟧ give the vocabulary for what this supports: the study repeats and replicates within one platform but does not claim reproduction across platforms.",
+  "home": [
+   "2.5",
+   "3.6"
+  ],
+  "note": "Cut the restatement of the warm-up literature and of the first-invocation costs of four simulators (2.5) and of the setup/warm-up protocol (3.6). Citations kept."
+ },
+ {
+  "i": 414,
+  "text": "Cohen's d uses the pooled standard deviation. Reporting it pairs an unequal-variance test (Welch's t-test, equation 3.13) with an effect size based on the pooled standard deviation (equation 3.14), which assumes equal variances. The asymmetry is accepted because Cohen's d is a descriptive supplement to the corrected p-value, not the basis for the significance decision. It therefore does not affect which pairs are called separated.",
+  "home": [],
+  "note": "Internal: removed the repeated reason for reporting Cohen's d (already given in the preceding pairwise-test paragraph of 3.10)."
+ },
+ {
+  "i": 448,
+  "text": "Figure 3.7 shows the dashboard architecture. Its defining property is that no query is written twice.",
+  "home": [],
+  "note": "Internal: cut 'impossible for two views to disagree', already stated earlier in 3.12."
+ },
+ {
+  "i": 453,
+  "text": "Reliability rests on repetition and seeding. Every random process is seeded identically across simulators. Each condition follows the warm-up and retention protocol of Section 3.6, and the whole campaign runs in one continuous session on one machine (Section 3.3). Run-to-run dispersion is reported as a coefficient of variation and a full measured range, so readers can judge stability directly rather than infer it from the median.",
+  "home": [
+   "3.6",
+   "3.3"
+  ],
+  "note": "Cut the restated warm-up/retention protocol (3.6) and single-session single-machine rationale (3.3)."
+ },
+ {
+  "i": 454,
+  "text": "Internal validity rests on the implementations being equivalent. Before timing begins, each simulator's network is checked for firing rates within tolerance of the others. This check is necessary but not sufficient, a residual risk Section 4.12 discusses.",
+  "home": [
+   "4.12"
+  ],
+  "note": "Cut the explanation of why firing-rate agreement is not sufficient; home 4.12."
+ },
+ {
+  "i": 455,
+  "text": "External validity is bounded. Absolute timings do not transfer to other machines (Section 3.4). The claim is that the ordering and scaling behaviour transfer, with Experiment 4 as the evidence. The workload is a feedforward network of fixed fan-in, so nothing here should be extrapolated to recurrent or convolutional spiking architectures.",
+  "home": [
+   "3.4"
+  ],
+  "note": "Cut the one-machine reason for non-transferable timings; home 3.4."
+ },
+ {
+  "i": 456,
+  "text": "Reproducibility is addressed by releasing the harness, the exact commands, the results database with per-row provenance, and the analysis pipeline that produces every figure and table in Chapter 4. Every figure in this thesis is computer-drawn, and the browser interface renders with no internet access (Section 3.12). This matters for a marking session, an air-gapped lab or a laptop on a train.",
+  "home": [
+   "3.12"
+  ],
+  "note": "Cut the explanation that the interface draws its own charts rather than using a CDN; home 3.12."
+ },
+ {
+  "i": 472,
+  "text": "Section 4.8 is deliberately placed before the energy and sensitivity analyses, which is unusual for a results chapter. It documents twelve defects in the measurement and reporting instruments, five in the harness and seven in the recording and reporting layer. One, in the processor-utilisation instrument, required Experiments 1 and 3 to be measured again.",
+  "home": [
+   "4.8"
+  ],
+  "note": "Overview shortened to the finding: cut which defects invalidated drafts / reached stored data and why instrument state is part of the result; all in 4.8."
+ },
+ {
+  "i": 474,
+  "text": "This chapter rests on one machine. Each figure, table and coefficient comes from exactly one measurement session. Nothing is pooled across sessions or machines (Section 3.4). All sessions ran on the researcher's own laptop, LT68. They cover five simulators across eleven executable backends: Brian2 with its NumPy, Cython and C++ standalone targets; NEST with one, two and four threads; Nengo; snnTorch; SpikingJelly; and a plain-NumPy control implemented in both scalar and vectorised form. Experiments 1 and 3, and every utilisation, energy and sensitivity figure built on them, come from the session of 20 September 2026. It repeated the original protocol with the corrected processor-utilisation instrument described in Section 4.8. Experiment 2 comes from two training campaigns: the fixed-budget campaign of August and the full-budget campaign of September. The released dashboard reads the same rows, so a number here and the same number in the interface come from one query, not two that might disagree.",
+  "home": [
+   "3.4"
+  ],
+  "note": "Cut the single-platform-principle reason for not pooling; home 3.4."
+ },
+ {
+  "i": 475,
+  "text": "The device running the benchmark suite inside WSL2 has an Intel Core i9-14900HX processor with thirty-two logical cores and no GPU acceleration. Absolute runtimes on this hardware are not those of a constrained cloud instance, but for the reasons given in Section 3.4 they should still not be quoted as a property of a simulator in general. The chapter's claims therefore rest on orderings, rank correlations and fitted exponents.",
+  "home": [
+   "3.4"
+  ],
+  "note": "Cut the explanation of why absolute times are platform-specific and claims rest on orderings; home 3.4 ('dimensionless' kept in 6.3)."
+ },
+ {
+  "i": 477,
+  "text": "Coverage is complete in all three measured experiments. This matters because the previous attempt at this campaign was not. All eleven backends finished inference, and all eleven finished scalability sweeps across all five sizes. This includes Nengo, whose sweep had previously stopped at 5,000 neurons because the condition at 10,000 could not finish on the machine used at the time. Training was done for nine backends across five simulators, with a single sample budget applied uniformly instead of the differing budgets of an earlier draft. The two plain-NumPy reference implementations, scalar and vectorized, have no learning mechanism. They are excluded from that table for that reason, not because of any incompleteness in the run. That coverage describes the fixed-budget campaign; the full reference configuration was later run for the same nine backends (Section 4.6).",
+  "home": [
+   "4.6"
+  ],
+  "note": "Cut the fixed vs full budget explanation; home 4.6 (design in 3.7)."
+ },
+ {
+  "i": 478,
+  "text": "Every executed condition followed the protocol of Section 3.6: five warm-up executions discarded, five measured executions kept, the median reported and every individual run stored. Without warm-up, a cold first measurement would overstate the two simulators that do substantial first-invocation work (code generation in one case, decoder solving in the other) by an order of magnitude. The setup cost itself is measured and reported separately.",
+  "home": [
+   "3.6"
+  ],
+  "note": "Cut the re-explanation of why warm-up matters and why discarded runs are not a convention; home 3.6. Kept the order-of-magnitude cold-start fact."
+ },
+ {
+  "i": 489,
+  "text": "Normality is checked, not assumed, and reported for every backend for the reason given in Section 3.10. The Shapiro-Wilk test fails to reject normality at the 0.05 level for ten of the eleven backends. It rejects it for one, NEST with one thread (p = 0.038), whose five runs include two slow ones, the right skew a runtime distribution often has. Levene's test over all eleven backends gives W = 6.35, p = 6.0e-06, so variances differ significantly between backends. This rules out the classical one-way ANOVA and is why Welch's version, which does not assume equal variances, is used.",
+  "home": [
+   "3.10"
+  ],
+  "note": "Cut the low-power reason for reporting normality per backend; home 3.10."
+ },
+ {
+  "i": 491,
+  "text": "Significance is reported pairwise, with the small-sample caveats of Section 3.10: five runs per side, and normality rejected for one of the eleven backends. Cohen's d is reported beside every p-value. Eleven backends give fifty-five pairs. After Holm correction, 50 separate at the 0.05 level and five do not. These are exactly the pairs one would expect to be close: NEST's three thread counts against each other, Brian2's Cython and NumPy targets against each other, and the scalar NumPy control against snnTorch. Table 4.2 shows the results against the fastest simulator configuration, NEST with four threads, and Appendix C gives the full fifty-five-pair matrix.",
+  "home": [
+   "3.10"
+  ],
+  "note": "Cut the small-sample caveat explanation and why Cohen's d accompanies p-values; home 3.10."
+ },
+ {
+  "i": 509,
+  "text": "Across all eleven backends, Kendall's tau-b between the orderings at one hundred and at ten thousand neurons is 0.273. A tau of one would mean identical orderings; at 0.273, only 35 of the 55 pairs are ordered the same way and 20 the opposite way. Section 4.10 gives the coefficients at the other sizes, where they are the main result, and explains why no p-value is given.",
+  "home": [
+   "4.10"
+  ],
+  "note": "Cut the tau values at 500, 1,000 and 5,000 neurons and the no-p-value reasoning; both in 4.10. Kept 0.273 and the 35/20 pair split."
+ },
+ {
+  "i": 523,
+  "text": "The split between NEST and every other backend at the reference size reflects the process each is measured in, as explained above. It is not a property of the simulator, and it shrinks to irrelevance once the network is large enough to matter.",
+  "home": [],
+  "note": "Internal: cut the repeated worker-process vs main-process explanation given in the previous paragraph of 4.5."
+ },
+ {
+  "i": 527,
+  "text": "Runtime alone also hides processor utilisation, which the corrected instrument measures for every configuration at every size. NEST's utilisation follows its configured thread count almost exactly: 100–101% with one thread, 200–224% with two and 392–485% with four across the sweep. Nengo uses one core up to five hundred neurons (101–100%). From one thousand upwards it uses 3,088–3,173%, about thirty-one of the thirty-two logical cores, because of its multi-threaded linear algebra. SpikingJelly peaks at mid-sized networks (676% at five hundred neurons, 513% at one thousand) and falls back towards one core at ten thousand (128%). snnTorch, the Brian2 NumPy and Cython targets and both NumPy controls stay within ten per cent of one core throughout. Brian2's C++ standalone target keeps about eight cores busy (790–799%) at every size, counted across its compiler and binary processes (Section 4.7). An earlier version of this chapter reported that target at 5.3 per cent and NEST as unmeasurable at the reference size. Both statements came from the defective instrument and are withdrawn. The fastest configurations do not always recruit more cores. At one hundred neurons the fastest simulator configuration, NEST with four threads, uses 3.8 cores to finish 10% sooner than NEST with one, a difference Section 4.3 cannot separate from noise. At ten thousand, however, the two fastest simulator configurations (Brian2's NumPy and Cython targets) use one core each, while Nengo uses 31.7 and is slowest of all. The comparison is fair in that each simulator was configured as its documentation recommends, but not in the sense of equal resources. That distinction carries over to equation (3.8), where utilisation is a multiplicand and not an incidental observation.",
+  "home": [
+   "4.7"
+  ],
+  "note": "Cut the explanation that the instrument counts compiler and binary child processes together; home 4.7."
+ },
+ {
+  "i": 530,
+  "text": "Each simulator was trained with its own native learning mechanism, as described in Section 3.7. The experiment compares cost, not accuracy. Every simulator and backend in this campaign received the same training and test budget: 6,000 training images and 1,000 test images, over three epochs. There was one required exception. Nengo's closed-form decoder solve has no epoch, so its figure is the cost of one solve over the same 6,000 images. Table 4.4 shows what was run and what resulted under that common budget. Table 4.5 gives the measured cost per image of each rule, extrapolates it to the standard reference configuration of 60,000 training and 10,000 test images over ten epochs, and sets that projection beside the measured cost of the full run, executed for all nine backends after the fixed-budget campaign closed. The fixed-budget rows make the cross-simulator comparison controlled; the full-budget rows are what the specification asks for (Section 3.7).",
+  "home": [
+   "3.7"
+  ],
+  "note": "Internal and 3.7: the full reference budget was stated twice; merged, and the fixed vs full rationale points to 3.7."
+ },
+ {
+  "i": 532,
+  "text": "The budget column is the same for every row except Nengo's. Fixing the budget isolates cost per epoch and accuracy as the quantities compared, so the budget itself need not be read as a variable. The energy column is listed as not measured throughout. This is a limitation of the executed experiment, not of the design in Section 3.7. The training path timed each adapter's per-epoch work with a wall-clock timer but did not run the utilisation or memory instruments. So neither processor utilisation (a multiplicative term in the proxy) nor peak memory was observed during training, and an energy figure built on an assumed utilisation would restate runtime instead of estimating energy. Measuring them now would mean repeating the training runs with the instruments attached. The full-budget campaign alone occupied this laptop for seven days and twenty hours of wall-clock time by its own log (12 to 20 September), which is why it was not repeated. The corresponding measured quantity here is cost per epoch, which both campaigns timed correctly. Section 4.8 describes the placeholder memory value that the training rows once carried.",
+  "home": [],
+  "note": "Internal: cut the third statement in 4.6 that Nengo's solve has no epoch."
+ },
+ {
+  "i": 535,
+  "text": "The projection is computed from measured per-image cost, not a fitted curve, for the reasons given in Section 3.7. The full reference configuration costs seconds for some of the nine rows and most of two days for others. Table 4.5 sets projection and execution side by side so that the projection can be judged instead of trusted.",
+  "home": [
+   "3.7"
+  ],
+  "note": "Cut why the projection was made at design time and that readers can recompute it; home 3.7."
+ },
+ {
+  "i": 544,
+  "text": "The unsupervised rules did not converge, and the thesis reports this instead of leaving it out. Across its three thread counts NEST scores between 7.40 and 7.50 per cent, and Brian2 scores between 7.70 and 7.80 per cent across its three backends. Chance level on ten classes is 10 per cent, so every configuration of both is at or below chance. The cause is known and recorded in the condition logs, not inferred afterwards. Unsupervised spike-timing-dependent plasticity has no mechanism for symmetry breaking. All hidden neurons see the same input under the same update rule and converge to the same receptive field. The labeling pass assigns most of them to one class, and that class wins every test presentation. The effect grows stronger, not weaker, in later epochs. The implementation follows a published procedure that provides three mechanisms not implemented here. These are lateral inhibition to enforce competition, an adaptive threshold to stop any neuron dominating, and weight normalization so that neurons compete on the shape of a receptive field and not its magnitude. That procedure also uses a much larger sample budget ⟦C1:[26]⟧, ⟦C2:[28]⟧, ⟦C3:[29]⟧. The mechanisms and the budget should be considered separately. The budget alone was tested here by executing the full reference configuration, which raises accuracy by only 0.82 to 2.21 percentage points (see below). What these rows lack is the mechanisms, not the budget.",
+  "home": [],
+  "note": "Internal: the chance-level sentence appeared three times in 4.6; cut here, kept in the budget paragraph."
+ },
+ {
+  "i": 545,
+  "text": "The correct reading of these six rows is that they measure the absence of those mechanisms. They do not measure the capability of NEST or Brian2, nor differences between thread counts or code-generation backends. Each of these agrees with the others in its own family to within 0.31 of a percentage point. An earlier version of this paragraph also named the size of the sample budget as a cause. That explanation has since been tested and can be discarded. Re-running the same configurations at the full reference budget of 60,000 training images over ten epochs moves NEST from 7.40–7.50 per cent to 8.32–8.41 per cent and Brian2 from 7.70–7.80 per cent to 9.60–9.91 per cent. The ordering among thread counts and code-generation backends stays unchanged. The gain from extra data is uneven: NEST gains 0.82 to 0.99 points and Brian2 1.80 to 2.21. Ten times the sample budget is therefore worth between 0.82 and 2.21 percentage points depending on the rule. Both simulators implement spike-timing-dependent plasticity correctly. What is missing is the surrounding architecture that makes the rule discriminative, and a larger budget does not substitute for it. The dashboard notes this explicitly next to the affected rows and prints the sample budget each row actually used in the same table. An accuracy figure reported without its budget invites exactly the misreading these rows would otherwise produce.",
+  "home": [],
+  "note": "Internal: cut the repeated chance-level sentence (stated earlier in 4.6)."
+ },
+ {
+  "i": 559,
+  "text": "The second is whether compile-heavy backends are eligible for summary rankings. The Brian2 standalone target's reported time is dominated by a C++ toolchain, not by simulation (Section 4.7). This has three consequences, each misleading on its own. At the reference size it is an order of magnitude slower than the slowest simulating backend in the study. When scaled, it gives an exponent indistinguishable from zero. And since the simulation runs in a separate compiled binary, the process whose memory is measured is not the one holding the network. Before the safeguard, this backend held the top spot for both flattest scaling and lowest peak memory, so an artifact won two of the four summary figures.",
+  "home": [
+   "4.7"
+  ],
+  "note": "Cut the recompile-on-every-invocation mechanism and the k/R-squared values; home 4.7. Kept the three consequences and the summary-figure effect."
+ },
+ {
+  "i": 560,
+  "text": "The solution is a single, uniform eligibility rule. Rows marked compile-dominated, and rows belonging to the plain reference implementation, are left out of every summary ranking. They remain fully present in every chart, table and export, labelled as Section 3.12 describes. This is a deliberate, conservative choice. Removing the rows outright would have been easier but would have hidden a real finding, since Brian2's standalone behaviour here is exactly what a practitioner choosing a code-generation strategy needs to know. The harness sets the compile-dominated flag at measurement time, from runtime that is large and largely invariant with network size. It is not applied by hand to a backend known in advance to have the property.",
+  "home": [
+   "3.12"
+  ],
+  "note": "Cut how the excluded rows are labelled and noted below figures; home 3.12."
+ },
+ {
+  "i": 595,
+  "text": "The fitted exponents behind the metric comparison that follows come from the same session and are given here to check the rank correlation against them. Ordered by exponent, the values are: Nengo / reference k = +1.550, NEST / 1 thread k = +1.199, NEST / 4 threads k = +1.195, NEST / 2 threads k = +1.151, SpikingJelly / CPU k = +1.026. They continue with the scalar NumPy control k = +0.993, snnTorch / CPU k = +0.895, the vectorized NumPy control k = +0.735, Brian2 / Cython k = +0.048, Brian2 / NumPy k = +0.023 and Brian2 / C++ standalone k = +0.001. All three Brian2 backends sit at the bottom of that ordering. Two of them, the NumPy and Cython targets, are also near the top of the runtime ordering at the reference size, and supply most of the agreement there is. Without them the coefficient falls to 0.056. The compile-dominated target, flat but slow, pulls it down (without it, 0.467).",
+  "home": [],
+  "note": "Internal: cut the closing sentence that speed and scaling are different questions, restated in the next paragraph of 4.10."
+ },
+ {
+  "i": 597,
+  "text": "The second question is whether the ordering depends on the metric used. The reference is the runtime ordering at the largest size. Ordering the same backends by the energy proxy gives tau = 0.782, by peak memory tau = +0.418, and by fitted scaling exponent tau = 0.236. The energy result is the strongest of the three because the proxy is largely rescaled runtime for most backends (Section 4.9). Every pair it reorders involves NEST with two or four threads, whose extra cores do not buy proportionally shorter runs. Speed and memory economy are moderately associated rather than opposed. Brian2's simulating targets are among both the fastest and the most frugal at the largest network, and Nengo is both the slowest and the largest at N = 10 000. But the association is far too weak to predict one from the other. Section 4.5 is the place to read the mechanism, not the correlation coefficient.",
+  "home": [
+   "4.9"
+  ],
+  "note": "Cut why the energy ordering repeats the runtime ordering (proxy is rescaled runtime); home 4.9."
+ },
+ {
+  "i": 605,
+  "text": "RQ2 asks how valid a runtime-based energy proxy is against the EFLOP metric, by Spearman rank correlation. Section 4.10's third test gives Spearman's rho = 0.645 across the 55 paired observations of the session. That correlation reflects network size, not implementation (Section 4.10). Per backend (Section 4.9), the proxy follows the workload for every configuration whose runtime is driven by simulation, keeps its ordering under substantial error in its own constants, and adds information to runtime only where a simulator uses several cores. Its practical value is therefore ordinal, which is the property a simulator-selection instrument needs, not the property a wattmeter would supply. Physical validation against measured power is specified as future work in Section 6.5.",
+  "home": [
+   "4.10",
+   "4.9"
+  ],
+  "note": "RQ2 answer reduced to finding plus pointers: cut why EFLOP is constant at fixed size (4.10) and compressed the proxy findings (4.9)."
+ },
+ {
+  "i": 606,
+  "text": "RQ3 asks how a dashboard can be designed to let a researcher filter and compare results by simulator, backend and experiment type. Chapter 5 answers it with a working instrument and a design finding: a hardware axis cannot express this comparison, so the dashboard is organized around a backend axis (Section 3.12). Every view recomputes from the backends a reader selects (Section 5.2).",
+  "home": [
+   "3.12",
+   "5.2"
+  ],
+  "note": "RQ3 answer reduced to finding: cut why a hardware axis fails (3.12) and how views recompute (5.2)."
+ },
+ {
+  "i": 608,
+  "text": "The measurements come from a single laptop with thirty-two logical cores, so absolute runtimes do not transfer to any other machine (Section 3.4). The thread-parallel setups are affected in the opposite direction to a constrained machine. NEST gains a real benefit from a second thread at the largest network size and none from four (Section 4.5). That pattern is a property of this specific core count, cache topology and WSL2 scheduler. It does not show how the same configuration would scale with more or fewer cores, a native Linux kernel or different memory bandwidth per core. It should not be generalized beyond the hardware it was measured on.",
+  "home": [
+   "3.4",
+   "4.5"
+  ],
+  "note": "Cut the one-machine reason for non-transferable runtimes (3.4); thread result now points to 4.5."
+ },
+ {
+  "i": 609,
+  "text": "The statistical limits stated in Section 3.10 apply: repeats within a condition are not independent, so the measured range is within-session variability only, and five is a small sample, with one of eleven backends failing the Shapiro-Wilk test. The pairwise Welch tests in Section 4.3 carry that caveat. Variability between sessions was measured separately (Section 4.4); it is larger for absolute times, though not for orderings.",
+  "home": [
+   "3.10"
+  ],
+  "note": "Cut the restated non-independence and small-sample explanation; home 3.10. Between-session pointer kept."
+ },
+ {
+  "i": 614,
+  "text": "The chapter found that the speed ordering reverses across the range of network sizes a researcher would reasonably use: Kendall's tau-b between the extremes is 0.273 and falls as low as 0.236; agreement between the extremes is low in every one of four sessions, while orderings re-measured at a fixed size agree closely (Sections 4.4 and 4.10). Some configurations scale their cost with the problem; others are dominated by fixed overhead, and one Brian2 backend measures its own compiler (Section 4.7). The ordering by scaling exponent does not depend on which size is reported, so it can be read as a property of the simulators rather than of the experiment. It is, however, only weakly related to speed at any one size. For backends whose runtime tracks the workload, the energy proxy preserves the ordering of workloads by theoretical cost and is stable under substantial error in its own constants, but it is largely runtime rescaled except where a simulator uses several cores (Section 4.9). Twelve defects were also found and corrected in the measuring and reporting instruments, five in the harness and seven in the recording and reporting layer (Section 4.8). The most serious, in the processor-utilisation instrument, required Experiments 1 and 3 to be measured again.",
+  "home": [
+   "4.4",
+   "4.10",
+   "4.7",
+   "4.9",
+   "4.8"
+  ],
+  "note": "Summary reduced to findings plus pointers: cut compile mechanism (4.7), proxy mechanism (4.9), defect breakdown (4.8), session range detail (4.4)."
+ },
+ {
+  "i": 620,
+  "text": "Section 3.12 described the dashboard's design rules and architecture, and Chapter 4 reported the study's findings as a fixed sequence of figures and tables, each built once from the full backend set. This chapter treats the dashboard as the study's second, applied output. It shows how the same measurements look through the interface a reader uses, and states what an interactive view can carry that a printed figure cannot. It closes by honestly assessing how far the prototype goes toward the requirement stated in Section 3.12.",
+  "home": [
+   "3.12"
+  ],
+  "note": "Cut the restated dashboard requirement; stated in 3.12."
+ },
+ {
+  "i": 643,
+  "text": "The comparison uses a single processor-based platform, held constant throughout the campaign (Section 3.4). This is why results are presented as orderings, scaling exponents and rank correlations, not absolute times. The main item of future work in Section 6.5 is extending the same harness to accelerator hardware.",
+  "home": [
+   "3.4"
+  ],
+  "note": "Cut the controlled-experiment explanation of the single platform; home 3.4."
+ },
+ {
+  "i": 653,
+  "text": "A benchmark harness needs testing at more than one scale. Section 4.8 describes the defects found in the measuring instruments and their corrections. The quadratic spike counter is the most instructive. It was invisible at pilot scale, where every configuration completed in seconds, and appeared only when a cost projection to full scale gave an implausible answer. Two practices are adopted here, and both are followed. A projection that seems absurd is treated as evidence about the harness rather than the simulators. And an instrument used only at the scale convenient for testing will be validated at precisely the scale where its defects do not show. The processor-utilisation instrument adds a third practice. Its two defective forms looked plausible and were caught only by testing against loads whose answer is known (Section 4.8). An instrument that has not passed that test should not be trusted with a result.",
+  "home": [
+   "4.8"
+  ],
+  "note": "Cut the account of the utilisation instrument's two failed forms and the known-load tests; home 4.8. Lesson kept."
+ },
+ {
+  "i": 654,
+  "text": "Cost, not accuracy, is the comparable quantity for learning rules, and a design should commit to this in advance rather than discover it. Three of the five simulators use rules that are orders of magnitude less sample-efficient, and more expensive per sample, than the two gradient-based libraries, because they sit at a different point in the taxonomy of ⟦C1:[20]⟧ (Section 3.7). Equalizing the budget would starve the gradient-based simulators or make the plasticity-based ones unaffordable. Section 3.7 fixes cost as the comparable quantity and reports accuracy at a stated budget. Whether the plasticity-based rules converge given the budget they require is a separate question; Section 6.5 states what answering it would need.",
+  "home": [
+   "3.7"
+  ],
+  "note": "Cut the re-explanation of the three-factor taxonomy; home 3.7. Citation kept."
+ },
+ {
+  "i": 655,
+  "text": "Choose a measurement platform for what it licenses, not for its power. Fixing one machine lets us read a difference in runtime as a difference between simulators (Section 3.4), whether the machine is modest or, as here, a thirty-two-core laptop. The choice still constrains the threading result, which is a property of this core count, cache topology and scheduler (Section 4.12). Generalizing it would repeat, in the opposite direction, the mistake made by the two-core finding in an earlier draft. On any hardware, a fixed platform delivers orderings, exponents and rank correlations, all dimensionless and transferable, and no conclusion here depends on an absolute time.",
+  "home": [
+   "3.4",
+   "4.12"
+  ],
+  "note": "Cut the single-platform rationale (3.4) and the NEST two-vs-four-thread result (4.5, discussed in 4.12). Lesson kept."
+ },
+ {
+  "i": 656,
+  "text": "The fourth lesson concerns the provenance of stored results. Records from superseded attempts and from another machine could silently displace the campaign's own, and at one stage a headline figure was affected. It was found by auditing the stored machine identifier and run_group, not by seeing anything wrong in the figures. Section 4.8 gives the defect and its remedy. The lesson is that an append-only store is the right design for a benchmark, because it makes a partial re-run safe, but the query layer carries the whole burden of deciding what is one campaign, and a layer resolving only on recency will pool hardware without saying so.",
+  "home": [
+   "4.8"
+  ],
+  "note": "Cut the account of the provenance defect and its run_group remedy (and the 462 count); home 4.8. Lesson and how it was found kept."
+ },
+ {
+  "i": 659,
+  "text": "The study measures processor-based execution only, and this thesis does not claim to extend to a GPU. Accelerator execution is a separate campaign, not an omission from this one. The capability paths are implemented and probe-verified, and Section 6.5 specifies the study that would exercise them. The energy proxy is validated ordinally, not physically. Its absolute joule values rest on manufacturer figures not verified for this chassis. The training results are limited by the budget. For the two plasticity-based simulators, they also depend on a presentation window shorter than the reference method uses, as shown in Section 4.8. The workload throughout is a feed-forward network with fixed fan-in (Section 3.13). Training cost is reported as time only: utilisation, memory and energy were not observed during training (Section 4.6).",
+  "home": [
+   "3.13"
+  ],
+  "note": "Cut the no-extrapolation consequence of the fixed fan-in workload; stated in 3.13."
+ },
+ {
+  "i": 660,
+  "text": "The statistical limits stated in Section 3.10 apply: repeats within a condition are not independent draws, five retained runs is a small sample, and one of eleven backends fails the Shapiro-Wilk test. This limits how much weight the Holm-corrected pairwise Welch tests in Section 4.3 can bear for that backend specifically. However, the omnibus Welch ANOVA and its effect size are reported alongside them and do not depend on every backend being exactly normal. Variability between sessions was measured directly on four sessions (Section 4.4). It is larger than the within-session range for absolute times, especially for multi-threaded configurations, and small for orderings.",
+  "home": [
+   "3.10"
+  ],
+  "note": "Cut the restated non-independence and small-sample explanation; home 3.10."
+ },
+ {
+  "i": 661,
+  "text": "Training results are bounded by the budget. Experiment 2 measures the cost of each simulator's native learning rule, not converged accuracy (Section 3.7). The accuracies in Table 4.4 are outcomes at a budget held constant across every backend, and the full reference configuration, first projected, has since been run in full (Section 4.6). Six of the nine rows are at or below chance, and the rows say so openly. Those rows measure a missing homeostatic mechanism, not a simulator (Section 4.6), and no conclusion in this thesis depends on them. Section 6.5 lays out the converged comparison and the compute it would take.",
+  "home": [
+   "3.7",
+   "4.6"
+  ],
+  "note": "Cut the projection-then-execution history of the full budget and its hour estimates (3.7, 4.6) and the fixed-budget explanation."
+ }
+]

@@ -1,71 +1,100 @@
-**Current October 2026 four-criterion version: start with `README_START_HERE_APPROVED_TITLE.md` and the latest thesis file `thesis/Thesis_SNN_Methods_Four_Criteria_Optimisation_2026.docx`. Previous design documentation and original data remain for provenance.**
+# Building a Benchmarking Dashboard for SNN Methods
 
-# SNN Simulator Benchmark: final project folder
+Project archive for the Master of ICT Research thesis *"Building a Benchmarking Dashboard for SNN Methods"* by **Lhakpa Tshering**, Melbourne Institute of Technology (October 2026).
+Supervisors: Dr Belal Chowdhury (Principal), Dr Bahram Farhadinia (Associate).
 
-This folder is the complete, current copy of the thesis project "Building a
-Benchmarking Dashboard for SNN Comparison". It holds the code, the launchers, the
-measured results, the dashboard and the thesis. Older copies and duplicates were
-moved to `..\_duplicates_to_delete` for you to review and delete.
+[![Open the dashboard](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://snn-benchmark-dashboard.streamlit.app)
 
-## Layout
+**Open the dashboard in your browser:** https://snn-benchmark-dashboard.streamlit.app (no installation needed).
 
-| Folder / file | What it is |
+The repository contains the benchmark suite, the results database, the analysis and reproduction scripts and the interactive dashboard used in the thesis (release **v1.0.0**).
+
+## Overview
+
+The study compares five spiking neural network (SNN) simulators across nine execution backends on one CPU-based platform, under a common protocol:
+
+| Simulator | Backends |
 |---|---|
-| `RUN_DASHBOARD.py` | Double-click to open the dashboard (http://127.0.0.1:5000, or the next free port if 5000 is reserved) |
-| `dashboard/` | Flask dashboard: app, data layer, JS, CSS and templates |
-| `snnbench/`, `run.py`, `RUN_ME.py` | The benchmark code, including the patched Brian2 checkpoint runner |
-| `launchers/` | Windows `.bat` launchers and the WSL shell scripts they call |
-| `results/benchmarks.db` | **The database the dashboard and thesis use.** Inference and scalability come from the CPU-corrected session of 20 Sep 2026; training comes from the August fixed-budget campaign and the September full-budget campaign |
-| `results/benchmarks_before_cpu_correction.db` | The same database before the CPU-corrected sessions were added |
-| `results/benchmarks_before_fullrun_merge.db` | The database before the nine full-budget training rows were added |
-| `results/benchmarks_PRE_REPAIR_2026-08-27.db` | The database before the 27 Aug profiler repair, kept as evidence |
-| `full_run_output/` | Raw output of the full-scale campaign (its own DB, log, validation, CSVs) |
-| `cpu_corrected_output/` | Raw output of the two CPU-corrected sessions (20 Sep), the instrument self-test and the analysis summaries |
-| `tools/` | `audit_completeness.py`, `cpu_instrument_check.py`, `merge_corrected.py`, `merge_fixed_budget.py`, `apply_ch4_fullrun.py`, and `thesis_build/` (the scripts that rebuilt the thesis's figures, tables and text) |
-| `docs/` | `CPU_MEASUREMENT_CORRECTION.md` (read this first), the verification report, changelogs, revision notes, the old READMEs, screenshots and `evidence/` |
+| Brian2 | NumPy, Cython, C++ standalone |
+| NEST | 1, 2 and 4 threads |
+| Nengo | default |
+| snnTorch | default (PyTorch) |
+| SpikingJelly | default (PyTorch) |
 
-## View the dashboard
+Two plain-NumPy validation controls are included. The workload is a feedforward leaky integrate-and-fire (LIF) network with fixed fan-in, measured at five network sizes.
 
-Double-click `RUN_DASHBOARD.py`, or run `python RUN_DASHBOARD.py`. The training
-page has a sample-budget toggle: 6,000 images / 3 epochs, or 60,000 / 10 (the default).
+Experiments:
 
-## Re-run or resume the campaign
+1. Inference cost (runtime, memory, processor-time energy proxy, processor use)
+2. Native-learning cost and exploratory accuracy at a fixed training budget
+3. Scalability across network sizes (fitted log-log exponents)
+4. Energy-proxy consistency against an analytic operation-count reference
 
-Run `launchers\RUN 256 CAMPAIGN.bat`. Use `CHECK PROGRESS.bat` to watch it and
-`STOP EXPERIMENT.bat` to stop it. The campaign resumes where it stopped. It runs
-inside WSL from a working copy at
-`~/snn_full_run/Full-Scale Simulator Comparison`. On a fresh machine the launcher
-creates that copy from this folder.
+The dashboard brings these measurements together and recommends a measured backend for a chosen network size and set of priorities (runtime, memory growth, scalability and optional exploratory accuracy), using a weighted-sum method with a softmax activation that expresses scores as relative priority shares. It also reports rank stability, sensitivity and the runtime consequences of reusing a choice at another network size.
 
-The simulators run in a Python environment that exists only on this laptop's WSL:
-`~/projects/snn_benchmark_dashboard.backup_20260805_224202/.venv/bin/python3.11`
-(set as `PY=` in `launchers/run_256_campaign.sh`). On another machine, build an
-environment from `requirements-frameworks.txt` (see `launchers/prepare_environment.sh`)
-and change `PY=`.
+## Repository structure
 
-## Re-measure CPU utilisation (inference + scalability)
+```
+snnbench/                 Benchmark suite (adapters, runner, profiler)
+  adapters/base.py        Common adapter interface for every simulator
+  runner.py               Measurement driver (warm-up and measured runs)
+  profiler.py             Processor-time energy proxy
+dashboard/                Flask dashboard + Streamlit alternative
+  dashboard_data.py       Shared data layer (queries, fits, Kendall's tau-b)
+  optimization.py         Preference-aware selection and activation function
+  robustness.py           Ties and stability notes
+  robustness_data/        Files read by the Robustness page
+  streamlit_app.py        Streamlit front end
+review/                   Scripts that regenerate the Appendix H tables
+tests/                    102 automated tests
+results/                  Results database, validation and analysis outputs
+run.py                    Benchmark command-line entry point
+RUN_DASHBOARD.py          Launches the Flask dashboard
+```
 
-Run `launchers\RUN CPU-CORRECTED MEASUREMENT.bat` (about 10 minutes). It checks the CPU instrument against
-known loads, then repeats Experiments 1 and 3 into a fresh database under `cpu_corrected_output/`.
+## Reproduction
 
-## Check that every experiment really ran
+Commands in the order used for the thesis campaign (Appendix A, Table 25):
 
-    python tools/audit_completeness.py "<path to this folder>"
+| Step | Command | Produces |
+|---|---|---|
+| 1 | `python run.py check` | Environment and capability report; which backends are reachable |
+| 2 | `python run.py validate` | Cross-backend equivalence check → `results/validate.txt` |
+| 3 | `python run.py bench --tasks inference,scalability --warmup 5 --measured 5` | Experiments 1 and 3 for every available backend at all five sizes |
+| 4 | `python run.py bench --tasks training --preset paper` | Experiment 2 at the fixed budget (6,000 / 1,000 images, three epochs, 256 hidden units) |
+| 5 | `python run.py bench --only brian2` | Partial re-run of one simulator (rows are appended, so interrupted runs resume) |
+| 6 | `python run.py analyse` | Chapter 4 statistics → `results/ANALYSIS.md`, `results/analysis.json` |
+| 7 | `python RUN_DASHBOARD.py` | Dashboard at http://127.0.0.1:5000 (or next free port) |
+| 8 | `streamlit run dashboard/streamlit_app.py` | Streamlit alternative (see `dashboard/requirements-streamlit.txt`) |
+| 9 | `python -m pytest tests` | The 102 automated tests |
 
-Result on 20 Sep 2026: **0 problems.**
+A simulator with no working backend on the requested device writes no row and prints an explicit skip; it is never recorded as zero.
 
-| Experiment | Thesis / dashboard data | Replication (corrected session 2) | Full-scale campaign |
-|---|---|---|---|
-| Inference (CPU, energy, memory on every run) | 22 / 22 | 22 / 22 | 22 / 22 (CPU not used) |
-| Scalability (5 measured runs each) | 110 / 110 | 110 / 110 | 110 / 110 (CPU not used) |
-| Training, 6,000 images / 3 epochs | 9 / 9 | n/a | n/a |
-| Training, 60,000 images / 10 epochs | 9 / 9 | n/a | 9 / 9 |
+## Running the dashboard on your own computer
 
-What was fixed on 20 Sep and why is in `docs/CPU_MEASUREMENT_CORRECTION.md`. In short, the old CPU instrument gave
-false readings in both earlier campaigns, so inference and scalability were measured again with a corrected, tested
-instrument. Every one of the 660 runs now has a CPU reading and an energy value.
+```
+pip install -r dashboard/requirements.txt
+python RUN_DASHBOARD.py                      # Flask version → http://127.0.0.1:5000
+streamlit run dashboard/streamlit_app.py     # Streamlit version → http://localhost:8501
+```
 
-Not measured, with the reason recorded in the thesis (Sections 4.6 and 4.12):
-- Training CPU utilisation, energy and peak memory. The training code timed wall-clock only, and repeating the
-  training campaigns would take about 8 days (the full-budget run took 7 days 20 hours).
-- Hidden width 500. This is a declared deviation; the earlier 500-width results were discarded.
+`127.0.0.1` addresses only work on the computer where the dashboard is running; use the online link above to view it anywhere.
+
+## Dashboard pages
+
+Dashboard (`/`), All Simulators, Optimisation, Inference, Scalability, Memory, Training, Sensitivity, Robustness, Equivalence and provenance, Methods and limitations. Every table has a CSV export, and read-only JSON routes expose the same data.
+
+## Scope and limitations
+
+- All measurements come from one CPU-only platform; results compare the implemented simulator-backend configurations under the stated protocol.
+- The energy figure is a processor-time-based estimate, not a measurement of electrical power.
+- Accuracy is reported for context and used only in explicitly exploratory selection scenarios.
+- The selection feature ranks only the measured backends at the measured network sizes.
+
+## Citation
+
+> L. Tshering, "Building a Benchmarking Dashboard for SNN Methods," Master of ICT Research thesis, School of Information Technology and Engineering, Melbourne Institute of Technology, 2026.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
